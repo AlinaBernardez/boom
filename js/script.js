@@ -7,7 +7,11 @@ let numPC;
 let numUser;
 
 window.addEventListener('keydown', e => {
-    if(e.key === 'Enter') juego();
+    if(e.key === 'Enter') {
+        promesa.then(value => {
+            juego(value);
+        })
+    }
 });
 
 const randomNum = () => {
@@ -15,52 +19,38 @@ const randomNum = () => {
     return num;
 }
 
-const cincoSegundos = new Promise ((resolve) => {
+const promesa = new Promise ((resolve) => {
     setTimeout(() => {
-        numPC = randomNum()
+        numPC = randomNum();
         resolve(numPC);
-    }, 5000);
+    }, 5000)
 });
 
-// function countdownRender () {
-//     let segundos = 5;
-//     setInterval(() => {
-//         console.log(segundos);
-//         segundos--;
-//     }, 1000)
-//     if(segundos === 0) {
-//         clearInterval(countdownRender);
-//         console.log('Times up!')
-//     }
-// }
 
-const juego = () => {
+const juego = (valor) => {
     numUser = userInput.value;
-    console.log(numUser)
     if(numUser > 0 && numUser <= 3) {
-    let segundos = 5;
-    let timer = setInterval(() => {
+        result.innerHTML = '';
+        let segundos = 5;
+        let timer = setInterval(() => {
         countdown.innerHTML = segundos;
         segundos--;
-        if(segundos === 0) {
+        if(segundos === -1) {
             clearInterval(timer);
-            numPC = randomNum();
-            if (numUser == numPC) {
+            if (numUser == valor) {
                 countdown.innerHTML = '';
                 result.innerHTML = `
                 <h1 class='green'>¡Enhorabuena! Has salvado el mundo.</h1>
-                <h1 class='resultado'>Tu número ${numUser} es el mismo que el número ${numPC}</h1>
-                `
-            }
-            else if (numUser !== numPC) {
+                <h1 class='resultado'>Tu número ${numUser} es el mismo que el número ${valor}</h1>
+            `}
+            else if (numUser !== valor) {
                 countdown.innerHTML = '';
                 result.innerHTML = `
                 <h1 class='red'>¡BOOOOOOM! La bomba ha estallado</h1>
-                <h1 class='resultado'>Tu número ${numUser} es diferente al número ${numPC}</h1>
-                `
-            }
+                <h1 class='resultado'>Tu número ${numUser} es diferente al número ${valor}</h1>
+                `}
         }
-    }, 1000)
+        }, 1000)
     }
     else {
         result.innerHTML = `<h1 class='resultado>¡Introduce un número del 1 al 3!</h1>`
