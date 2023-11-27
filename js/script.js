@@ -15,7 +15,8 @@ window.addEventListener('keydown', e => {
 });
 
 const randomNum = () => {
-    let num = Math.floor(Math.random() * 3);
+    let num = Math.floor(Math.random() * 3) + 1;
+    console.log(num)
     return num;
 }
 
